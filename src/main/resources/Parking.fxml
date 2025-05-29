@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<Pane id="main-window" maxHeight="480.0" maxWidth="640.0" minHeight="480.0" minWidth="640.0" prefHeight="480.0" prefWidth="640.0" stylesheets="@Parking.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.ParkingController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="620.0" styleClass="win-border" text="+-----------------------------------------------------------------------------------+" />
+      <VBox layoutX="20.0" layoutY="26.0" prefHeight="427.0" prefWidth="603.0">
+         <children>
+            <Label id="title" prefHeight="68.0" prefWidth="603.0" text="PARKING" />
+            <VBox id="options-box" prefHeight="237.0" prefWidth="603.0">
+               <children>
+                  <Label prefHeight="14.0" prefWidth="603.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
+                  <HBox id="opt-registrar-entrada" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
+                     <children>
+                        <Rectangle id="square-select1" fx:id="squareRegistrarEntrada" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" width="7.0" />
+                        <Label fx:id="lblRegistrarEntrada" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="REGISTRAR ENTRADA" />
+                     </children>
+                  </HBox>
+                  <HBox id="opt-registrar-salida" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
+                     <children>
+                        <Rectangle id="square-select2" fx:id="squareRegistrarSalida" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label fx:id="lblRegistrarSalida" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="REGISTRAR SALIDA" />
+                     </children>
+                  </HBox>
+                  <HBox id="opt-alta-oficial|" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
+                     <children>
+                        <Rectangle id="square-select3" fx:id="squareAltaOficial" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label fx:id="lblAltaOficial" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="ALTA OFICIAL" />
+                     </children>
+                  </HBox>
+                  <HBox id="opt-alta-residente" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
+                     <children>
+                        <Rectangle id="square-select4" fx:id="squareAltaResidente" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label fx:id="lblAltaResidente" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="ALTA RESIDENTE" />
+                     </children>
+                  </HBox>
+                  <HBox id="opt-comienza-mes" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
+                     <children>
+                        <Rectangle id="square-select5" fx:id="squareComienzaMes" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label fx:id="lblComienzaMes" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="COMIENZA MES" />
+                     </children>
+                  </HBox>
+                  <HBox id="opt-generar-reporte" alignment="CENTER" prefHeight="15.0" prefWidth="603.0" styleClass="option-text">
+                     <children>
+                        <Rectangle id="square-select6" fx:id="squareGenReporte" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label fx:id="lblGenerarReporte" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="GENERAR REPORTE" />
+                     </children>
+                  </HBox>
+                  <Label prefHeight="17.0" prefWidth="604.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
+               </children>
+            </VBox>
+            <AnchorPane prefHeight="112.0" prefWidth="603.0">
+               <children>
+                  <ImageView fitHeight="117.0" fitWidth="263.0" layoutX="176.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@coche.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="45.0" prefWidth="548.0" styleClass="option-text">
+               <children>
+                  <HBox alignment="CENTER" layoutX="168.0" prefHeight="20.0" prefWidth="252.0">
+                     <children>
+                        <Rectangle id="square-select6" fx:id="squareSalir" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" visible="false" width="7.0" />
+                        <Label id="label-salir" fx:id="lblSalir" prefHeight="20.0" prefWidth="122.0" text="salir" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <Label layoutX="14.0" layoutY="23.0" prefHeight="434.0" prefWidth="9.0" styleClass="win-border" text="||||||||||||||||||||" textOverrun="CLIP" wrapText="true" />
+      <Label layoutX="622.0" layoutY="23.0" prefHeight="434.0" prefWidth="9.0" styleClass="win-border" text="||||||||||||||||||||" textOverrun="CLIP" wrapText="true" />
+      <Label layoutX="14.0" layoutY="449.0" prefHeight="17.0" prefWidth="620.0" styleClass="win-border" text="+-----------------------------------------------------------------------------------+" />
+   </children>
+</Pane>

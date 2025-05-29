@@ -12,12 +12,12 @@ repositories {
 
 javafx {
     version = "20.0.2"
-    modules = [ 'javafx.controls' ]
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 application {
     mainModule = "com.example.app"
-    mainClass = "com.example.app.MyApplication"
+    mainClass = "com.example.app.Main"
 }
 
 dependencies {

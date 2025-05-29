@@ -1,0 +1,45 @@
+@font-face{
+    font-family: 'VT323';
+    src: url('../fonts/VT323-Regular.ttf');
+}
+
+.root{
+    -fx-font-family: 'VT323';
+    -fx-background-color: #191716;
+}
+
+#title{
+    -fx-alignment: center;
+    -fx-font-size: 36px;
+    -fx-text-fill: #c8b491;
+}
+
+.win-border{
+    -fx-text-fill: #755e4a;
+    -fx-font-size: 18px;
+}
+
+.menu-option{
+    -fx-font-size: 18px;
+    -fx-text-fill: #daba8b;
+}
+
+.menu-limit{
+    -fx-text-fill: #604848;
+    -fx-font-size: 18px;
+    -fx-alignment: center;
+}
+
+#options-box{
+    -fx-spacing: 8px;
+}
+
+.menu-option{
+    -fx-padding: 0 0 0 10;
+}
+
+#label-salir{
+    -fx-alignment: center;
+    -fx-font-size: 18px;
+    -fx-text-fill: #daba8b;
+}
