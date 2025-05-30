@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane id="main-window" maxHeight="121.0" maxWidth="426.0" minHeight="121.0" minWidth="426.0" prefHeight="121.0" prefWidth="426.0" stylesheets="@Input.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.InputController">
+   <children>
+      <Label id="prompt" fx:id="labelPrompt" layoutY="10.0" prefHeight="19.0" prefWidth="426.0" text="INGRESE MATRICULA" />
+      <Rectangle fx:id="inputBackground" fill="#65788f" height="46.0" layoutX="27.0" layoutY="54.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="372.0" />
+      <TextField id="text-field" fx:id="inputText" layoutX="27.0" layoutY="53.0" prefHeight="46.0" prefWidth="372.0" />
+   </children>
+</AnchorPane>

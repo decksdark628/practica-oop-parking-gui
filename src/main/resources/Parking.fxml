@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,10 +15,13 @@
       <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="620.0" styleClass="win-border" text="+-----------------------------------------------------------------------------------+" />
       <VBox layoutX="20.0" layoutY="26.0" prefHeight="427.0" prefWidth="603.0">
          <children>
-            <Label id="title" prefHeight="68.0" prefWidth="603.0" text="PARKING" />
+            <Label id="title" prefHeight="68.0" prefWidth="603.0" style="-fx-padding: 10 0 0 0;" text="PARKING">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Label>
             <VBox id="options-box" prefHeight="237.0" prefWidth="603.0">
                <children>
-                  <Label prefHeight="14.0" prefWidth="603.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
+                  <Label prefHeight="6.0" prefWidth="603.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
                   <HBox id="opt-registrar-entrada" alignment="CENTER" prefHeight="15.0" prefWidth="603.0">
                      <children>
                         <Rectangle id="square-select1" fx:id="squareRegistrarEntrada" fill="#8c4f4a" height="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="square" width="7.0" />
@@ -54,7 +58,7 @@
                         <Label fx:id="lblGenerarReporte" prefHeight="17.0" prefWidth="135.0" styleClass="menu-option" text="GENERAR REPORTE" />
                      </children>
                   </HBox>
-                  <Label prefHeight="17.0" prefWidth="604.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
+                  <Label prefHeight="9.0" prefWidth="603.0" styleClass="menu-limit" text="===========================" textOverrun="CLIP" />
                </children>
             </VBox>
             <AnchorPane prefHeight="112.0" prefWidth="603.0">

@@ -43,3 +43,11 @@
     -fx-font-size: 18px;
     -fx-text-fill: #daba8b;
 }
+
+.menu-option:active{
+    -fx-text-fill: #ab7571;
+}
+
+#label-salir:active{
+    -fx-text-fill: #a0625c;
+}
