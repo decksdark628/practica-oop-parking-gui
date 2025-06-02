@@ -1,20 +1,28 @@
-package com.example.app;
+package com.example.app.controllers;
 
+import com.example.app.Main;
+import com.example.app.Parking;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 
 public class ParkingController{
-    PseudoClass active = PseudoClass.getPseudoClass("active");
-    private Main mainReference;
-    private int selectedOption = 0;
+    public static Stage popUpStage;
+    private PseudoClass active = PseudoClass.getPseudoClass("active");
+    public static int selectedOption = 0;
     private boolean justEntered = true;
+    private static String placa;
 
     @FXML
     private Label lblAltaOficial;
@@ -65,37 +73,41 @@ public class ParkingController{
         }
     }
 
-    public void handleEnterPressed(){
+    public void resolveQuery(){
         switch (selectedOption){
             case 0:
-                tryToLaunchInputWindow();
-                break;
-            case 1:
-                tryToLaunchInputWindow();
-                break;
-            case 2:
-                tryToLaunchInputWindow();
-                break;
-            case 3:
-                tryToLaunchInputWindow();
-                break;
-            case 6:
-                Main.exitApp();
-                break;
+
         }
+    }
+
+    public void setupKeyHandlers(){
+        Scene scene = Main.getPrimaryStage().getScene();
+
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()){
+                case DOWN -> handleDownPressed();
+                case UP -> handleUpPressed();
+                case ENTER -> handleEnterPressed();
+            }
+        });
+    }
+
+    public void handleEnterPressed(){
+        if (selectedOption == 6)
+            Main.exitApp();
+        else if (selectedOption >= 0 && selectedOption <= 3)
+            tryToLaunchInputWindow();
+        else
+            Parking.imprimirHashmap();
     }
 
     private void tryToLaunchInputWindow(){
         try {
-            mainReference.launchInputWindow();
+            launchInputWindow();
         }
         catch (IOException e){
             e.printStackTrace();;
         }
-    }
-
-    public void linkToMain(Main m){
-        mainReference = m;
     }
 
     public void handleDownPressed(){
@@ -165,5 +177,46 @@ public class ParkingController{
         lblComienzaMes.pseudoClassStateChanged(active, false);
         lblGenerarReporte.pseudoClassStateChanged(active, false);
         lblSalir.pseudoClassStateChanged(active, false);
+    }
+
+    public void launchInputWindow() throws IOException {
+        if (popUpStage == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InputBox.fxml"));
+            Parent inputPopUp = loader.load();
+
+            InputBoxController inputController = loader.getController();
+
+            popUpStage = new Stage();
+            popUpStage.initOwner(Main.getPrimaryStage());
+            popUpStage.initModality(Modality.WINDOW_MODAL);
+            popUpStage.setScene(new Scene(inputPopUp, 426, 121));
+            popUpStage.initStyle(StageStyle.UNDECORATED);
+
+            Scene scene = ParkingController.popUpStage.getScene();
+
+            scene.setOnKeyPressed(event -> {
+                switch (event.getCode()){
+                    case ESCAPE -> inputController.handleEscapePressed();
+                    case ENTER -> inputController.handleEnterPressed();
+                }
+            });
+
+            popUpStage.show();
+
+        }
+    }
+    public static void closeInputWindow() throws IOException {
+        if (popUpStage != null) {
+            popUpStage.close();
+            popUpStage = null;
+        }
+    }
+
+    public static String getPlaca(){
+        return placa;
+    }
+
+    public static void setPlaca(String placa){
+        placa = placa;
     }
 }
