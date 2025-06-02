@@ -1,7 +1,7 @@
 package com.example.app.controllers;
 
 import com.example.app.Main;
-import com.example.app.Parking;
+import com.example.app.model.Parking;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 

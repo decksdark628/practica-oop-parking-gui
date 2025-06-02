@@ -1,6 +1,6 @@
 package com.example.app.controllers;
 
-import com.example.app.Parking;
+import com.example.app.model.Parking;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

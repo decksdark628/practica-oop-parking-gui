@@ -1,12 +1,8 @@
 package com.example.app.controllers;
 
-import com.example.app.Parking;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 
