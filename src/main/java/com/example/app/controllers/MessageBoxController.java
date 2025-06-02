@@ -12,20 +12,7 @@ import java.io.IOException;
 
 public class MessageBoxController {
     @FXML
-    private Rectangle inputBackground;
-
-    @FXML
-    private TextField inputText;
-
-    @FXML
     private Label labelPrompt;
-
-    public void initialize(){
-        inputText.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE)
-                handleEscapePressed();
-        });
-    }
 
     public void setupKeyHandlers(){
         Scene scene = ParkingController.popUpStage.getScene();
@@ -46,40 +33,15 @@ public class MessageBoxController {
         }
     }
     public void handleEnterPressed(){
-        String text = inputText.getText();
-        if (!text.isBlank()){
-            text = text.trim().toUpperCase();
-            if (text.length() == 7) {
-                switch (ParkingController.selectedOption){
-                    case 0:
-                        Parking.registrarEntrada(text);
-                        System.out.println("Vehiculo registrado con placa: " + text);
-                        break;
-                    case 1:
-                        Parking.registrarSalida(text);
-                        System.out.println("Salida registrada con placa: " + text);
-                        break;
-                    case 2:
-                        Parking.darAltaOficial(text);
-                        System.out.println("Vehiculo registrado como oficial: " + text);
-                        break;
-                    case 3:
-                        Parking.darAltaResidente(text);
-                        System.out.println("Vehiculo registrado como residente: " + text);
-                        break;
-                    default:
-                        System.out.println("no es una opcion valida");
-                }
-            }
-        }
-
-
-
         try {
             ParkingController.closeInputWindow();
         }
         catch (IOException e){
             e.printStackTrace();;
         }
+    }
+
+    public Label getLabelPrompt(){
+        return labelPrompt;
     }
 }

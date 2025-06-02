@@ -16,7 +16,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-
 public class ParkingController{
     public static Stage popUpStage;
     private PseudoClass active = PseudoClass.getPseudoClass("active");
@@ -76,7 +75,6 @@ public class ParkingController{
     public void resolveQuery(){
         switch (selectedOption){
             case 0:
-
         }
     }
 
@@ -157,8 +155,6 @@ public class ParkingController{
                 squareSalir.setVisible(true);
                 lblSalir.pseudoClassStateChanged(active, true);
                 break;
-            default:
-                System.out.println("Something broke");
         }
     }
     private void resetMenuHighlights(){
@@ -182,6 +178,32 @@ public class ParkingController{
     public void launchInputWindow() throws IOException {
         if (popUpStage == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/InputBox.fxml"));
+            Parent inputPopUp = loader.load();
+
+            InputBoxController inputController = loader.getController();
+
+            popUpStage = new Stage();
+            popUpStage.initOwner(Main.getPrimaryStage());
+            popUpStage.initModality(Modality.WINDOW_MODAL);
+            popUpStage.setScene(new Scene(inputPopUp, 426, 121));
+            popUpStage.initStyle(StageStyle.UNDECORATED);
+
+            Scene scene = ParkingController.popUpStage.getScene();
+
+            scene.setOnKeyPressed(event -> {
+                switch (event.getCode()){
+                    case ESCAPE -> inputController.handleEscapePressed();
+                    case ENTER -> inputController.handleEnterPressed();
+                }
+            });
+
+            popUpStage.show();
+        }
+    }
+
+    public void launchMessageWindow() throws IOException {
+        if (popUpStage == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MessageBox.fxml"));
             Parent inputPopUp = loader.load();
 
             InputBoxController inputController = loader.getController();

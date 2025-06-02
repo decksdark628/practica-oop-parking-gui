@@ -54,7 +54,8 @@ public class InputBoxController {
                 switch (ParkingController.selectedOption){
                     case 0:
                         Parking.registrarEntrada(text);
-                        System.out.println("Vehiculo registrado con placa: " + text);
+                        if (Parking.buscarVehiculo(text) == null)
+                            //ParkingController.launchMessageWindow();
                         break;
                     case 1:
                         Parking.registrarSalida(text);
