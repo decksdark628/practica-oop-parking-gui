@@ -15,6 +15,7 @@ public class Oficial extends Vehiculo implements ReinicioMensual{
         LocalDateTime salida = LocalDateTime.now();
         Estancia estancia = new Estancia(ingreso, salida);
         estancias.add(estancia);
+        super.setUltimaEntrada(null);
     }
 
     public void comienzaMes(){

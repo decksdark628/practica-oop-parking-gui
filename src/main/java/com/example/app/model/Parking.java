@@ -4,51 +4,98 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class Parking{
-    public static HashMap<String, Vehiculo> vehiculos = new HashMap<>();
-    private static GeneradorInformes genInf;
+    public HashMap<String, Vehiculo> vehiculos = new HashMap<>();
+    private GeneradorInformes genInf;
 
     public Parking(){}
 
-    public Parking(HashMap<String, Vehiculo> vehiculos){
-        this.vehiculos = vehiculos;
+    public Result registrarEntrada(String placa){
+        Result r;
+        if (validarPlaca(placa)) {
+            Vehiculo v = buscarVehiculo(placa);
+            if (v == null) {
+                registrarVehiculo(placa);
+                v = buscarVehiculo(placa);
+            }
+            if (v.getUltimoIngreso() == null) {
+                v.registrarUltimoIngreso();
+                r = new Result(true, "Entrada registrada");
+            }
+            else
+                r = new Result(false, "El vehiculo aun no ha salido");
+        }
+        else
+            r = new Result(false, "La placa no tiene un formato valido");
+        return r;
     }
-
-    public static void registrarEntrada(String placa){
+    
+    public Result registrarSalida(String placa){
+        Result r;
         Vehiculo v = buscarVehiculo(placa);
         if (v == null)
-            registrarVehiculo(placa);
-        buscarVehiculo(placa).registrarUltimoIngreso();
+            r = new Result(false, "El vehiculo no existe");
+        else if (v.getUltimoIngreso() != null) {
+                v.registrarSalida();
+                r = new Result(true, "Salida registrada");
+                v.setUltimaEntrada(null);
+            }
+        else
+            r = new Result(false, "El vehiculo aun no ha entrado");
+
+        return r;
+    }
+
+    public Result darAltaOficial(String placa) {
+        Result r;
+        if (validarPlaca(placa)) {
+            Vehiculo v = buscarVehiculo(placa);
+            if (v != null) {
+                if (!(v instanceof Oficial)) {
+                    if (v.getUltimoIngreso() == null) {
+                        Vehiculo oficial = new Oficial(placa);
+                        Vehiculo confirmacion = vehiculos.replace(placa, oficial);
+                        if (confirmacion != null)
+                            r = new Result(true, "Vehiculo dado de alta como Oficial");
+                        else
+                            r = new Result(false, "Hubo un error");
+                    }
+                    else
+                        r = new Result(false, "El vehiculo aun no ha salido");
+                } else
+                    r = new Result(false, "El vehiculo ya es Oficial");
+            } else
+                r = new Result(false, "El vehiculo no existe");
+        } else
+            r = new Result(false, "La placa no tiene un formato valido");
+        return r;
     }
     
-    public static boolean registrarSalida(String placa){
-        boolean conf = false;
-        Vehiculo v = buscarVehiculo(placa);
-        if (v != null){
-            v.registrarSalida();
-            conf = true;
-        }
-        return conf;
+    public Result darAltaResidente(String placa){
+        Result r;
+        if (validarPlaca(placa)) {
+            Vehiculo v = buscarVehiculo(placa);
+            if (v != null) {
+                if (!(v instanceof Residente)){
+                    if (v.getUltimoIngreso() == null) {
+                        Vehiculo residente = new Oficial(placa);
+                        Vehiculo confirmacion = vehiculos.replace(placa, residente);
+                        if (confirmacion != null)
+                            r = new Result(true, "Vehiculo dado de alta como Oficial");
+                        else
+                            r = new Result(false, "Hubo un error");
+                        }
+                    else
+                        r = new Result(false, "El vehiculo aun no ha salido");
+                } else
+                    r = new Result(false, "El vehiculo ya es Oficial");
+            } else
+                r = new Result(false, "El vehiculo no existe");
+        } else
+            r = new Result(false, "La placa no tiene un formato valido");
+        return r;
     }
 
-    //hasmap returns replaced value or null
-    public static boolean darAltaOficial(String placa){
-
-        Vehiculo temp = null;
-        Vehiculo v = new Oficial(placa);
-        temp = vehiculos.replace(placa, v);
-
-        return temp != null;
-    }
-    
-    public static boolean darAltaResidente(String placa){
-        Vehiculo temp = null;
-        Vehiculo v = new Residente(placa);
-        temp = vehiculos.replace(placa, v);
-
-        return temp != null;
-    }
-
-    public static void comienzaMes(){
+    public void comienzaMes(){
         for (Vehiculo v : vehiculos.values()){
             if (v instanceof ReinicioMensual){
                 ReinicioMensual rm = (ReinicioMensual)v;
@@ -57,7 +104,7 @@ public class Parking{
         }
     }
 
-    public static void generarInformeResidentes(){
+    public void generarInformeResidentes(){
         ArrayList<Residente> lista = new ArrayList<>();
         for (Vehiculo v : vehiculos.values()){
             if (v instanceof Residente){
@@ -69,20 +116,19 @@ public class Parking{
         genInf.generarInformeResidentes(lista);
     }
 
-
-    public static Vehiculo buscarVehiculo(String placa){
+    public Vehiculo buscarVehiculo(String placa){
         return vehiculos.get(placa);
     }
 
-    public static void registrarVehiculo(String placa){
+    public void registrarVehiculo(String placa){
         NoResidente v = new NoResidente(placa);
         vehiculos.put(placa, v);
     }
 
-    public static void imprimirHashmap(){
-        for (Vehiculo v : vehiculos.values()){
-            if (v != null)
-                System.out.println(v + "\n");
-        }
+    private boolean validarPlaca(String placa){
+        if (placa.length() < 7)
+            return false;
+        else
+            return true;
     }
 }

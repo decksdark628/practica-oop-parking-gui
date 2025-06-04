@@ -24,6 +24,7 @@ public class GeneradorInformes{
             FileWriter writer = new FileWriter("fileName.txt");
             writer.write(informe);
             writer.close();
+            System.out.println("Importe impreso");
         }
         catch (IOException e){
             e.printStackTrace();

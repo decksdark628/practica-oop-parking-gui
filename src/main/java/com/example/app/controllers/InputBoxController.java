@@ -1,16 +1,23 @@
 package com.example.app.controllers;
 
-import com.example.app.model.Parking;
+import com.example.app.model.AppConstants;
+import com.example.app.model.KeyEventListener;
+import com.example.app.model.ParkingService;
+import com.example.app.model.SceneManager;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
-import java.io.IOException;
+import java.util.function.UnaryOperator;
 
-public class InputBoxController {
+public class InputBoxController implements KeyEventListener{
+    private ParkingService parkingService;
+    private SceneManager sceneManager;
+
     @FXML
     private Rectangle inputBackground;
 
@@ -20,68 +27,55 @@ public class InputBoxController {
     @FXML
     private Label labelPrompt;
 
-    public void initialize(){
+    public void initialize() {
         inputText.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE)
-                handleEscapePressed();
+                handleEscape();
+            else if (event.getCode() == KeyCode.ENTER)
+                handleEnter();
         });
 
-    }
-
-    public void setupKeyHandlers(){
-        Scene scene = ParkingController.popUpStage.getScene();
-
-        scene.setOnKeyPressed(event -> {
-            switch (event.getCode()){
-                case ESCAPE -> handleEscapePressed();
-                case ENTER -> handleEnterPressed();
+        UnaryOperator<TextFormatter.Change> filter = change ->{
+            String newText = change.getControlNewText().toUpperCase();
+            if (newText.length() <= AppConstants.PLATE_MAX_CHARS){
+                change.setText(change.getText().toUpperCase());
+                return change;
             }
-        });
+            return null;
+        };
+
+        inputText.setTextFormatter(new TextFormatter<>(filter));
     }
 
-    public void handleEscapePressed() {
-        try {
-            ParkingController.closeInputWindow();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public boolean subscribesTo(KeyEvent event){
+        return switch (event.getCode()){
+            case ENTER, ESCAPE -> true;
+            default -> false;
+        };
+    }
+
+    public void onKeyPressed(KeyEvent event){
+        switch (event.getCode()){
+            case ENTER -> handleEnter();
+            case ESCAPE -> handleEscape();
         }
     }
-    public void handleEnterPressed(){
-        String text = inputText.getText();
-        if (!text.isBlank()){
-            text = text.trim().toUpperCase();
-            if (text.length() == 7) {
-                switch (ParkingController.selectedOption){
-                    case 0:
-                        Parking.registrarEntrada(text);
-                        if (Parking.buscarVehiculo(text) == null)
-                            //ParkingController.launchMessageWindow();
-                        break;
-                    case 1:
-                        Parking.registrarSalida(text);
-                        System.out.println("Salida registrada con placa: " + text);
-                        break;
-                    case 2:
-                        Parking.darAltaOficial(text);
-                        System.out.println("Vehiculo registrado como oficial: " + text);
-                        break;
-                    case 3:
-                        Parking.darAltaResidente(text);
-                        System.out.println("Vehiculo registrado como residente: " + text);
-                        break;
-                    default:
-                        System.out.println("no es una opcion valida");
-                }
-            }
-        }
 
+    public void handleEnter(){
+        parkingService.setMatricula(inputText.getText().trim().toUpperCase());
+        sceneManager.closePopUp();
+    }
 
+    public void handleEscape() {
+        parkingService.setMatricula(null);
+        sceneManager.closePopUp();
+    }
 
-        try {
-            ParkingController.closeInputWindow();
-        }
-        catch (IOException e){
-            e.printStackTrace();;
-        }
+    public void setSceneManager(SceneManager sceneManager){
+        this.sceneManager = sceneManager;
+    }
+
+    public void setParkingService(ParkingService parkingService){
+        this.parkingService = parkingService;
     }
 }

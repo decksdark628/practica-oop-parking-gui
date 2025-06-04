@@ -1,27 +1,22 @@
 package com.example.app.controllers;
 
-import com.example.app.Main;
-import com.example.app.model.Parking;
+import com.example.app.model.*;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.IOException;
+public class ParkingController implements KeyEventListener {
+    private Stage popUpStage;
+    private KeyHandler keyHandler = new KeyHandler();
+    private ParkingService parkingService;
+    private SceneManager sceneManager;
+    private MenuState menuState;
+    private MenuLogic menuLogic;
 
-public class ParkingController{
-    public static Stage popUpStage;
     private PseudoClass active = PseudoClass.getPseudoClass("active");
-    public static int selectedOption = 0;
-    private boolean justEntered = true;
-    private static String placa;
 
     @FXML
     private Label lblAltaOficial;
@@ -65,68 +60,75 @@ public class ParkingController{
     @FXML
     private Rectangle squareSalir;
 
-    public void initialize(){
-        if (justEntered) {
-            lblRegistrarEntrada.pseudoClassStateChanged(active, true);
-            justEntered = false;
+    @FXML
+    private void initialize() {
+        lblRegistrarEntrada.pseudoClassStateChanged(active, true);
+    }
+
+    public boolean subscribesTo(KeyEvent event) {
+        return switch (event.getCode()) {
+            case UP, DOWN, ENTER -> true;
+            default -> false;
+        };
+    }
+
+    public void onKeyPressed(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP -> handleUp();
+            case DOWN -> handleDown();
+            case ENTER -> handleEnter();
         }
     }
 
-    public void resolveQuery(){
-        switch (selectedOption){
-            case 0:
-        }
+    private void handleUp() {
+        menuLogic.handleUp();
+        updateMenuSelection();
     }
 
-    public void setupKeyHandlers(){
-        Scene scene = Main.getPrimaryStage().getScene();
+    private void handleDown() {
+        menuLogic.handleDown();
+        updateMenuSelection();
+    }
 
-        scene.setOnKeyPressed(event -> {
-            switch (event.getCode()){
-                case DOWN -> handleDownPressed();
-                case UP -> handleUpPressed();
-                case ENTER -> handleEnterPressed();
-            }
+    public void setMenuState(MenuState menuState) {
+        this.menuState = menuState;
+    }
+
+    public void handleEnter() {
+        int selection = menuState.getOptionSelected();
+        parkingService.setOperation(selection);
+
+        if (selection >= 0 && selection <= 5){
+            if (selection <= 3)
+                askPlate();
+
+            Result r = parkingService.executeQuery();
+            if (r != null)
+                showMessage(r.getMessage());
+        } else if (selection == 6)
+            sceneManager.closeApp();
+    }
+
+    private void askPlate(){
+        sceneManager.launchPopUpWindow(1, (InputBoxController controller) -> {
+            controller.setParkingService(parkingService);
+            controller.setSceneManager(sceneManager);
+        });
+    }
+    private void showMessage(String msg){
+        sceneManager.launchPopUpWindow(2, (MessageBoxController controller) -> {
+            controller.setParkingService(parkingService);
+            controller.setSceneManager(sceneManager);
+            controller.changeText(msg);
+            popUpStage = sceneManager.getPopUpStage();
+            keyHandler.registerScene(popUpStage.getScene());
+            keyHandler.addListener(controller);
         });
     }
 
-    public void handleEnterPressed(){
-        if (selectedOption == 6)
-            Main.exitApp();
-        else if (selectedOption >= 0 && selectedOption <= 3)
-            tryToLaunchInputWindow();
-        else
-            Parking.imprimirHashmap();
-    }
-
-    private void tryToLaunchInputWindow(){
-        try {
-            launchInputWindow();
-        }
-        catch (IOException e){
-            e.printStackTrace();;
-        }
-    }
-
-    public void handleDownPressed(){
-        if (selectedOption <= 5)
-            selectedOption++;
-        else
-            selectedOption = 0;
-        updateMenuSelection();
-    }
-
-    public void handleUpPressed(){
-        if (selectedOption >= 1)
-            selectedOption--;
-        else
-            selectedOption = 6;
-        updateMenuSelection();
-    }
-
-    public void updateMenuSelection(){
+    public void updateMenuSelection() {
         resetMenuHighlights();
-        switch (selectedOption) {
+        switch (menuState.getOptionSelected()) {
             case 0:
                 squareRegistrarEntrada.setVisible(true);
                 lblRegistrarEntrada.pseudoClassStateChanged(active, true);
@@ -157,7 +159,8 @@ public class ParkingController{
                 break;
         }
     }
-    private void resetMenuHighlights(){
+
+    private void resetMenuHighlights() {
         squareRegistrarEntrada.setVisible(false);
         squareRegistrarSalida.setVisible(false);
         squareAltaOficial.setVisible(false);
@@ -175,70 +178,19 @@ public class ParkingController{
         lblSalir.pseudoClassStateChanged(active, false);
     }
 
-    public void launchInputWindow() throws IOException {
-        if (popUpStage == null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InputBox.fxml"));
-            Parent inputPopUp = loader.load();
-
-            InputBoxController inputController = loader.getController();
-
-            popUpStage = new Stage();
-            popUpStage.initOwner(Main.getPrimaryStage());
-            popUpStage.initModality(Modality.WINDOW_MODAL);
-            popUpStage.setScene(new Scene(inputPopUp, 426, 121));
-            popUpStage.initStyle(StageStyle.UNDECORATED);
-
-            Scene scene = ParkingController.popUpStage.getScene();
-
-            scene.setOnKeyPressed(event -> {
-                switch (event.getCode()){
-                    case ESCAPE -> inputController.handleEscapePressed();
-                    case ENTER -> inputController.handleEnterPressed();
-                }
-            });
-
-            popUpStage.show();
-        }
+    public void setMenuLogic(MenuLogic menuLogic) {
+        this.menuLogic = menuLogic;
     }
 
-    public void launchMessageWindow() throws IOException {
-        if (popUpStage == null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MessageBox.fxml"));
-            Parent inputPopUp = loader.load();
-
-            InputBoxController inputController = loader.getController();
-
-            popUpStage = new Stage();
-            popUpStage.initOwner(Main.getPrimaryStage());
-            popUpStage.initModality(Modality.WINDOW_MODAL);
-            popUpStage.setScene(new Scene(inputPopUp, 426, 121));
-            popUpStage.initStyle(StageStyle.UNDECORATED);
-
-            Scene scene = ParkingController.popUpStage.getScene();
-
-            scene.setOnKeyPressed(event -> {
-                switch (event.getCode()){
-                    case ESCAPE -> inputController.handleEscapePressed();
-                    case ENTER -> inputController.handleEnterPressed();
-                }
-            });
-
-            popUpStage.show();
-
-        }
-    }
-    public static void closeInputWindow() throws IOException {
-        if (popUpStage != null) {
-            popUpStage.close();
-            popUpStage = null;
-        }
+    public void setSceneManager(SceneManager sceneManager){
+        this.sceneManager = sceneManager;
     }
 
-    public static String getPlaca(){
-        return placa;
+    public void setParkingService(ParkingService parkingService){
+        this.parkingService = parkingService;
     }
 
-    public static void setPlaca(String placa){
-        placa = placa;
+    public void setPopUpStage(Stage popUpStage){
+        this.popUpStage = popUpStage;
     }
 }
