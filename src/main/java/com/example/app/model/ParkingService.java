@@ -1,5 +1,7 @@
 package com.example.app.model;
 
+import com.example.app.model.utils.Result;
+
 public class ParkingService{
     private int operation;
     private String matricula;
@@ -7,8 +9,9 @@ public class ParkingService{
     Parking parking = new Parking();
 
     public Result executeQuery(){
-        //TODO make this better. Could be more organized
         if (matricula == null && operation >=0 && operation <= 3)
+            return null;
+        if (fileName == null && operation == 5)
             return null;
         Result r = switch (operation) {
             case 0 -> parking.registrarEntrada(matricula);
@@ -19,10 +22,7 @@ public class ParkingService{
                 parking.comienzaMes();
                 yield new Result(true, "Se ha reiniciado el mes");
             }
-            case 5 -> {
-                parking.generarInformeResidentes();
-                yield new Result(true, "Se ha generado el informe");
-            }
+            case 5 -> parking.generarInformeResidentes(fileName);
             default -> new Result(false, "Operacion no valida");
         };
         matricula = null;
@@ -47,5 +47,13 @@ public class ParkingService{
     }
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 }

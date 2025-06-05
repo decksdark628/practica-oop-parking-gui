@@ -2,6 +2,8 @@ package com.example.app;
 
 import com.example.app.controllers.ParkingController;
 import com.example.app.model.*;
+import com.example.app.model.utils.KeyHandler;
+import com.example.app.model.utils.SceneManager;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;

@@ -1,5 +1,14 @@
 package com.example.app.model;
 
+import com.example.app.model.interfaces.PagaAlSalir;
+import com.example.app.model.interfaces.ReinicioMensual;
+import com.example.app.model.vehicles.NoResidente;
+import com.example.app.model.vehicles.Oficial;
+import com.example.app.model.vehicles.Residente;
+import com.example.app.model.vehicles.Vehiculo;
+import com.example.app.model.utils.GeneradorInformes;
+import com.example.app.model.utils.Result;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -36,8 +45,10 @@ public class Parking{
             r = new Result(false, "El vehiculo no existe");
         else if (v.getUltimoIngreso() != null) {
                 v.registrarSalida();
-                r = new Result(true, "Salida registrada");
-                v.setUltimaEntrada(null);
+                if (v instanceof PagaAlSalir)
+                    r = new Result(true, "Total a pagar: " + ((PagaAlSalir) v).getPrecioAPagar());
+                else
+                    r = new Result(true, "Salida registrada");
             }
         else
             r = new Result(false, "El vehiculo aun no ha entrado");
@@ -77,17 +88,17 @@ public class Parking{
             if (v != null) {
                 if (!(v instanceof Residente)){
                     if (v.getUltimoIngreso() == null) {
-                        Vehiculo residente = new Oficial(placa);
+                        Vehiculo residente = new Residente(placa);
                         Vehiculo confirmacion = vehiculos.replace(placa, residente);
                         if (confirmacion != null)
-                            r = new Result(true, "Vehiculo dado de alta como Oficial");
+                            r = new Result(true, "Vehiculo dado de alta como Residente");
                         else
                             r = new Result(false, "Hubo un error");
                         }
                     else
                         r = new Result(false, "El vehiculo aun no ha salido");
                 } else
-                    r = new Result(false, "El vehiculo ya es Oficial");
+                    r = new Result(false, "El vehiculo ya es Residente");
             } else
                 r = new Result(false, "El vehiculo no existe");
         } else
@@ -104,7 +115,7 @@ public class Parking{
         }
     }
 
-    public void generarInformeResidentes(){
+    public Result generarInformeResidentes(String fileName){
         ArrayList<Residente> lista = new ArrayList<>();
         for (Vehiculo v : vehiculos.values()){
             if (v instanceof Residente){
@@ -113,7 +124,8 @@ public class Parking{
             }
         }
         genInf = new GeneradorInformes();
-        genInf.generarInformeResidentes(lista);
+        genInf.generarInformeResidentes(fileName, lista);
+        return new Result(true, "Se ha generado el reporte");
     }
 
     public Vehiculo buscarVehiculo(String placa){
@@ -130,5 +142,13 @@ public class Parking{
             return false;
         else
             return true;
+    }
+
+    public HashMap<String, Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(HashMap<String, Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
     }
 }

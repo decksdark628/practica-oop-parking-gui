@@ -1,5 +1,6 @@
-package com.example.app.model;
+package com.example.app.model.utils;
 
+import com.example.app.model.AppConstants;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +27,7 @@ public class SceneManager{
             e.printStackTrace();
         }
     }
-    // TODO make Enum
+
     public <T> void launchPopUpWindow(int type, Consumer<T> initController){
         String fxmlPath = null;
 
@@ -39,9 +40,6 @@ public class SceneManager{
             try{
                 FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
                 Parent root = loader.load();
-
-//                T controller = loader.getController();
-//                initController.accept(loader.getController());
 
                 popUpStage = new Stage();
                 popUpStage.initOwner(primaryStage);

@@ -1,9 +1,11 @@
-package com.example.app.model;
+package com.example.app.model.vehicles;
+
+import com.example.app.model.interfaces.ReinicioMensual;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-public class Residente extends Vehiculo implements ReinicioMensual{
+public class Residente extends Vehiculo implements ReinicioMensual {
     public static final double PRECIO_POR_MINUTO = 0.002;
     private int tiempoAcumulado;
 
@@ -18,13 +20,13 @@ public class Residente extends Vehiculo implements ReinicioMensual{
         long minutosTranscurridos = Duration.between(ingreso, salida).toMinutes();
 
         tiempoAcumulado += (int)minutosTranscurridos;
+        super.setUltimaEntrada(null);
 	}
 
     public String generarInformacionPago(){
-        return super.getPlaca() + "\t\t\t" + tiempoAcumulado + "\t\t\t" + tiempoAcumulado * PRECIO_POR_MINUTO;
+        return super.getPlaca() + "\t\t\t\t" + tiempoAcumulado + "\t\t\t\t" + (tiempoAcumulado * PRECIO_POR_MINUTO);
     }
 
-    
     public void comienzaMes(){
         tiempoAcumulado = 0;
     }

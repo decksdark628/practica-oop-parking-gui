@@ -1,7 +1,9 @@
-package com.example.app.model;
+package com.example.app.model.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.app.model.interfaces.KeyEventListener;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 

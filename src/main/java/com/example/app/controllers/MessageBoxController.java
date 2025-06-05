@@ -1,15 +1,12 @@
 package com.example.app.controllers;
 
-import com.example.app.model.KeyEventListener;
-import com.example.app.model.KeyHandler;
+import com.example.app.model.interfaces.KeyEventListener;
+import com.example.app.model.utils.KeyHandler;
 import com.example.app.model.ParkingService;
-import com.example.app.model.SceneManager;
+import com.example.app.model.utils.SceneManager;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-
-import java.io.IOException;
 
 public class MessageBoxController implements KeyEventListener {
     private KeyHandler keyHandler;

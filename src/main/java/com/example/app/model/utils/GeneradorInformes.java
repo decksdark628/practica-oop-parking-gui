@@ -1,4 +1,6 @@
-package com.example.app.model;
+package com.example.app.model.utils;
+
+import com.example.app.model.vehicles.Residente;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,9 +8,9 @@ import java.util.ArrayList;
 
 public class GeneradorInformes{
 
-    public void generarInformeResidentes(ArrayList<Residente> residentes){
+    public void generarInformeResidentes(String fileName, ArrayList<Residente> residentes){
         String texto = generarTextoInforme(residentes);
-        generarArchivoTexto("informe", texto);
+        generarArchivoTexto(fileName, texto);
     }
     
     private String generarTextoInforme(ArrayList<Residente> residentes){
@@ -21,10 +23,9 @@ public class GeneradorInformes{
 
     private void generarArchivoTexto(String fileName, String informe){
         try {
-            FileWriter writer = new FileWriter("fileName.txt");
+            FileWriter writer = new FileWriter(fileName + ".txt");
             writer.write(informe);
             writer.close();
-            System.out.println("Importe impreso");
         }
         catch (IOException e){
             e.printStackTrace();

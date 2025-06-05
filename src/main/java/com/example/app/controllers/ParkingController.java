@@ -1,6 +1,10 @@
 package com.example.app.controllers;
 
 import com.example.app.model.*;
+import com.example.app.model.interfaces.KeyEventListener;
+import com.example.app.model.utils.KeyHandler;
+import com.example.app.model.utils.Result;
+import com.example.app.model.utils.SceneManager;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -61,18 +65,18 @@ public class ParkingController implements KeyEventListener {
     private Rectangle squareSalir;
 
     @FXML
-    private void initialize() {
+    private void initialize(){
         lblRegistrarEntrada.pseudoClassStateChanged(active, true);
     }
 
-    public boolean subscribesTo(KeyEvent event) {
+    public boolean subscribesTo(KeyEvent event){
         return switch (event.getCode()) {
             case UP, DOWN, ENTER -> true;
             default -> false;
         };
     }
 
-    public void onKeyPressed(KeyEvent event) {
+    public void onKeyPressed(KeyEvent event){
         switch (event.getCode()) {
             case UP -> handleUp();
             case DOWN -> handleDown();
@@ -80,12 +84,12 @@ public class ParkingController implements KeyEventListener {
         }
     }
 
-    private void handleUp() {
+    private void handleUp(){
         menuLogic.handleUp();
         updateMenuSelection();
     }
 
-    private void handleDown() {
+    private void handleDown(){
         menuLogic.handleDown();
         updateMenuSelection();
     }
@@ -99,9 +103,8 @@ public class ParkingController implements KeyEventListener {
         parkingService.setOperation(selection);
 
         if (selection >= 0 && selection <= 5){
-            if (selection <= 3)
+            if (selection != 4)
                 askPlate();
-
             Result r = parkingService.executeQuery();
             if (r != null)
                 showMessage(r.getMessage());
@@ -113,6 +116,10 @@ public class ParkingController implements KeyEventListener {
         sceneManager.launchPopUpWindow(1, (InputBoxController controller) -> {
             controller.setParkingService(parkingService);
             controller.setSceneManager(sceneManager);
+            controller.setMenuState(menuState);
+            controller.init();
+            if (menuState.getOptionSelected() == 5)
+                controller.changeLabelPrompt("Nombre del archivo:");
         });
     }
     private void showMessage(String msg){

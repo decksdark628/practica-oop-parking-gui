@@ -1,9 +1,11 @@
-package com.example.app.model;
+package com.example.app.model.vehicles;
+
+import com.example.app.model.interfaces.PagaAlSalir;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-public class NoResidente extends Vehiculo implements PagaAlSalir{
+public class NoResidente extends Vehiculo implements PagaAlSalir {
     public static final double PRECIO_POR_MINUTO = 0.02;
     private double precioAPagar;
 

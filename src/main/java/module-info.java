@@ -10,4 +10,10 @@ module com.example.app {
     opens com.example.app.controllers to javafx.fxml;
     exports com.example.app.model;
     opens com.example.app.model to javafx.fxml;
+    exports com.example.app.model.utils;
+    opens com.example.app.model.utils to javafx.fxml;
+    exports com.example.app.model.vehicles;
+    opens com.example.app.model.vehicles to javafx.fxml;
+    exports com.example.app.model.interfaces;
+    opens com.example.app.model.interfaces to javafx.fxml;
 }

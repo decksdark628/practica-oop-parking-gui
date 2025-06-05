@@ -1,4 +1,4 @@
-package com.example.app.model;
+package com.example.app.model.utils;
 
 public class Result{
     boolean success;

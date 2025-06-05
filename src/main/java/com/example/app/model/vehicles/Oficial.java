@@ -1,9 +1,12 @@
-package com.example.app.model;
+package com.example.app.model.vehicles;
+
+import com.example.app.model.Estancia;
+import com.example.app.model.interfaces.ReinicioMensual;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Oficial extends Vehiculo implements ReinicioMensual{
+public class Oficial extends Vehiculo implements ReinicioMensual {
     private ArrayList<Estancia> estancias = new ArrayList<>();
     
     public Oficial(String placa){
